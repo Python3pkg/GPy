@@ -126,4 +126,4 @@ try:
     lib = config.get('plotting', 'library')
     change_plotting_library(lib)
 except NoOptionError:
-    print("No plotting library was specified in config file. \n{}".format(error_suggestion))
+    print(("No plotting library was specified in config file. \n{}".format(error_suggestion)))

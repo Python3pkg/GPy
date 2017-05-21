@@ -131,8 +131,8 @@ def _image_comparison(baseline_images, extensions=['pdf','svg','png'], tol=11, r
                         #shutil.copy2(os.path.join(result_dir, "{}.{}".format(base, 'png')), os.path.join(baseline_dir, "{}.{}".format(base, 'png')))
                         raise IOError("Baseline file {} not found, copying result {}".format(expected, actual))
                     else:
-                        exp_dict = dict(np.load(expected).items())
-                        act_dict = dict(np.load(actual).items())
+                        exp_dict = dict(list(np.load(expected).items()))
+                        act_dict = dict(list(np.load(actual).items()))
                         for name in act_dict:
                             if name in exp_dict:
                                 try:
@@ -161,7 +161,7 @@ def flatten_axis(ax, prevname=''):
         elif isinstance(l, dict):
             for _n in l:
                 _tmp = _flatten(l, pre+"."+_n+".")
-                for _nt in _tmp.keys():
+                for _nt in list(_tmp.keys()):
                     arrays[_nt] = _tmp[_nt]
         elif isinstance(l, list) and len(l)>0:
             for i in range(len(l)):
@@ -201,7 +201,7 @@ def test_figure():
     #import matplotlib
     matplotlib.rcParams.update(matplotlib.rcParamsDefault)
     #matplotlib.rcParams[u'figure.figsize'] = (4,3)
-    matplotlib.rcParams[u'text.usetex'] = False
+    matplotlib.rcParams['text.usetex'] = False
     import warnings
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
@@ -245,7 +245,7 @@ def test_kernel():
     #import matplotlib
     matplotlib.rcParams.update(matplotlib.rcParamsDefault)
     #matplotlib.rcParams[u'figure.figsize'] = (4,3)
-    matplotlib.rcParams[u'text.usetex'] = False
+    matplotlib.rcParams['text.usetex'] = False
     import warnings
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
@@ -268,7 +268,7 @@ def test_plot():
     import matplotlib
     matplotlib.rcParams.update(matplotlib.rcParamsDefault)
     #matplotlib.rcParams[u'figure.figsize'] = (4,3)
-    matplotlib.rcParams[u'text.usetex'] = False
+    matplotlib.rcParams['text.usetex'] = False
     import warnings
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
@@ -295,7 +295,7 @@ def test_twod():
     import matplotlib
     matplotlib.rcParams.update(matplotlib.rcParamsDefault)
     #matplotlib.rcParams[u'figure.figsize'] = (4,3)
-    matplotlib.rcParams[u'text.usetex'] = False
+    matplotlib.rcParams['text.usetex'] = False
     X = np.random.uniform(-2, 2, (40, 2))
     f = .2 * np.sin(1.3*X[:,[0]]) + 1.3*np.cos(2*X[:,[1]])
     Y = f+np.random.normal(0, .1, f.shape)
@@ -318,7 +318,7 @@ def test_threed():
     import matplotlib
     matplotlib.rcParams.update(matplotlib.rcParamsDefault)
     #matplotlib.rcParams[u'figure.figsize'] = (4,3)
-    matplotlib.rcParams[u'text.usetex'] = False
+    matplotlib.rcParams['text.usetex'] = False
     X = np.random.uniform(-2, 2, (40, 2))
     f = .2 * np.sin(1.3*X[:,[0]]) + 1.3*np.cos(2*X[:,[1]])
     Y = f+np.random.normal(0, .1, f.shape)
@@ -343,7 +343,7 @@ def test_sparse():
     import matplotlib
     matplotlib.rcParams.update(matplotlib.rcParamsDefault)
     #matplotlib.rcParams[u'figure.figsize'] = (4,3)
-    matplotlib.rcParams[u'text.usetex'] = False
+    matplotlib.rcParams['text.usetex'] = False
     X = np.random.uniform(-2, 2, (40, 1))
     f = .2 * np.sin(1.3*X) + 1.3*np.cos(2*X)
     Y = f+np.random.normal(0, .1, f.shape)
@@ -361,7 +361,7 @@ def test_classification():
     import matplotlib
     matplotlib.rcParams.update(matplotlib.rcParamsDefault)
     #matplotlib.rcParams[u'figure.figsize'] = (4,3)
-    matplotlib.rcParams[u'text.usetex'] = False
+    matplotlib.rcParams['text.usetex'] = False
     X = np.random.uniform(-2, 2, (40, 1))
     f = .2 * np.sin(1.3*X) + 1.3*np.cos(2*X)
     Y = f+np.random.normal(0, .1, f.shape)
@@ -385,7 +385,7 @@ def test_sparse_classification():
     import matplotlib
     matplotlib.rcParams.update(matplotlib.rcParamsDefault)
     #matplotlib.rcParams[u'figure.figsize'] = (4,3)
-    matplotlib.rcParams[u'text.usetex'] = False
+    matplotlib.rcParams['text.usetex'] = False
     X = np.random.uniform(-2, 2, (40, 1))
     f = .2 * np.sin(1.3*X) + 1.3*np.cos(2*X)
     Y = f+np.random.normal(0, .1, f.shape)
@@ -404,7 +404,7 @@ def test_gplvm():
     np.random.seed(12345)
     matplotlib.rcParams.update(matplotlib.rcParamsDefault)
     #matplotlib.rcParams[u'figure.figsize'] = (4,3)
-    matplotlib.rcParams[u'text.usetex'] = False
+    matplotlib.rcParams['text.usetex'] = False
     #Q = 3
     # Define dataset
     #N = 60
@@ -451,7 +451,7 @@ def test_bayesian_gplvm():
     np.random.seed(12345)
     matplotlib.rcParams.update(matplotlib.rcParamsDefault)
     #matplotlib.rcParams[u'figure.figsize'] = (4,3)
-    matplotlib.rcParams[u'text.usetex'] = False
+    matplotlib.rcParams['text.usetex'] = False
     #Q = 3
     # Define dataset
     #N = 10

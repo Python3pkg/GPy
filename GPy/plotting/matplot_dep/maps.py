@@ -163,7 +163,7 @@ def new_shape_string(sf,name,regex,field=2,type=None):
 
         newshp.line(parts=_parts)
         newshp.records.append(sr.record)
-        print(len(sr.record))
+        print((len(sr.record)))
 
     newshp.save(name)
     print(index)

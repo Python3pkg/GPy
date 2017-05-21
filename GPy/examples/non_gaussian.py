@@ -37,7 +37,7 @@ def student_t_approx(optimize=True, plot=True):
 
     #Add student t random noise to datapoints
     deg_free = 1
-    print("Real noise: ", real_std)
+    print(("Real noise: ", real_std))
     initial_var_guess = 0.5
     edited_real_sd = initial_var_guess
 
@@ -151,7 +151,7 @@ def boston_example(optimize=True, plot=True):
 
     for n, (train, test) in enumerate(kf):
         X_train, X_test, Y_train, Y_test = X[train], X[test], Y[train], Y[test]
-        print("Fold {}".format(n))
+        print(("Fold {}".format(n)))
 
         noise = 1e-1 #np.exp(-2)
         rbf_len = 0.5
@@ -197,7 +197,7 @@ def boston_example(optimize=True, plot=True):
 
         for stu_num, df in enumerate(degrees_freedoms):
             #Student T
-            print("Student-T GP {}df".format(df))
+            print(("Student-T GP {}df".format(df)))
             t_distribution = GPy.likelihoods.noise_model_constructors.student_t(deg_free=df, sigma2=noise)
             stu_t_likelihood = GPy.likelihoods.Laplace(Y_train.copy(), t_distribution)
             mstu_t = GPy.models.GPRegression(X_train.copy(), Y_train.copy(), kernel=kernelstu.copy(), likelihood=stu_t_likelihood)
@@ -230,8 +230,8 @@ def boston_example(optimize=True, plot=True):
         plt.scatter(X_test[:, data_axis_plot], Y_test, c='r', marker='x')
         plt.title('Stu t {}df'.format(df))
 
-    print("Average scores: {}".format(np.mean(score_folds, 1)))
-    print("Average pred density: {}".format(np.mean(pred_density, 1)))
+    print(("Average scores: {}".format(np.mean(score_folds, 1))))
+    print(("Average pred density: {}".format(np.mean(pred_density, 1))))
 
     if plot:
         #Plotting

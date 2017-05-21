@@ -59,7 +59,7 @@ class PiecewiseLinear(Mapping):
         dL_dv = np.zeros(self.sorted_values.size)
 
         #loop across each interval, computing the gradient for each of the 4 parameters that define it
-        for i, (low, up, g, v) in enumerate(zip(self. sorted_breaks[:-1], self.sorted_breaks[1:], self.grads, self.sorted_values[:-1])):
+        for i, (low, up, g, v) in enumerate(list(zip(self. sorted_breaks[:-1], self.sorted_breaks[1:], self.grads, self.sorted_values[:-1]))):
             index = np.logical_and(x>low, x<up)
             xx = x[index]
             grad = dL_dF[index]

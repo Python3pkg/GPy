@@ -100,7 +100,7 @@ def epomeo_gpx(max_iters=200, optimize=True, plot=True):
     Y = np.zeros((num_data, 2))
     t = np.zeros((num_data, 2))
     start = 0
-    for Xpart, index in zip(data['X'], range(len(data['X']))):
+    for Xpart, index in zip(data['X'], list(range(len(data['X'])))):
         end = start+Xpart.shape[0]
         t[start:end, :] = np.hstack((Xpart[:, 0:1],
                                     index*np.ones((Xpart.shape[0], 1))))
@@ -572,7 +572,7 @@ def warped_gp_cubic_sine(max_iters=100):
     #warp_m.optimize(max_iters=max_iters)
 
     print(warp_m)
-    print(warp_m['.*warp.*'])
+    print((warp_m['.*warp.*']))
 
     warp_m.predict_in_warped_space = False
     warp_m.plot(title="Warped GP - Latent space")

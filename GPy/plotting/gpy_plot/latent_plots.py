@@ -38,7 +38,7 @@ def _wait_for_updates(view, updates):
     if view is not None:
         try:
             if updates:
-                clear = raw_input('yes or enter to deactivate updates - otherwise still do updates - use plots[imshow].deactivate() to clear')
+                clear = input('yes or enter to deactivate updates - otherwise still do updates - use plots[imshow].deactivate() to clear')
                 if clear.lower() in 'yes' or clear == '':
                     view.deactivate()
             else:
@@ -284,7 +284,7 @@ def _plot_steepest_gradient_map(self, canvas, which_indices, Xgrid,
                         kern=None, annotation_kwargs=None,
                         **imshow_kwargs):
     if output_labels is None:
-        output_labels = range(self.output_dim)
+        output_labels = list(range(self.output_dim))
     def plot_function(x):
         Xgrid[:, which_indices] = x
         dmu_dX = np.sqrt(((self.predictive_gradients(Xgrid, kern=kern)[0])**2).sum(1))

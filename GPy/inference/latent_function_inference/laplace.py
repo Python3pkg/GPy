@@ -86,14 +86,14 @@ class Laplace(LatentFunctionInference):
             #Need to zip individual elements of Y_metadata aswell
             Y_metadata_flat = {}
             if Y_metadata is not None:
-                for key, val in Y_metadata.items():
+                for key, val in list(Y_metadata.items()):
                     Y_metadata_flat[key] = np.atleast_1d(val).reshape(-1, 1)
 
             zipped_values = []
 
             for i in range(Y.shape[0]):
                 y_m = {}
-                for key, val in Y_metadata_flat.items():
+                for key, val in list(Y_metadata_flat.items()):
                     if np.isscalar(val) or val.shape[0] == 1:
                         y_m[key] = val
                     else:
@@ -102,7 +102,7 @@ class Laplace(LatentFunctionInference):
                 zipped_values.append((flat_y[i], flat_mu[i], flat_var[i], y_m))
         else:
             #Otherwise just pass along None's
-            zipped_values = zip(flat_y, flat_mu, flat_var, [None]*Y.shape[0])
+            zipped_values = list(zip(flat_y, flat_mu, flat_var, [None]*Y.shape[0]))
 
         def integral_generator(yi, mi, vi, yi_m):
             def f(fi_star):
@@ -114,8 +114,8 @@ class Laplace(LatentFunctionInference):
             return f
 
         #Eq 30
-        p_ystar, _ = zip(*[quad(integral_generator(y, m, v, yi_m), -np.inf, np.inf)
-                           for y, m, v, yi_m in zipped_values])
+        p_ystar, _ = list(zip(*[quad(integral_generator(y, m, v, yi_m), -np.inf, np.inf)
+                           for y, m, v, yi_m in zipped_values]))
         p_ystar = np.array(p_ystar).reshape(-1, 1)
         return np.log(p_ystar)
 

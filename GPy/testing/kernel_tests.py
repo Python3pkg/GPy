@@ -47,7 +47,7 @@ class Kern_check_model(GPy.core.Model):
     def is_positive_semi_definite(self):
         v = np.linalg.eig(self.kernel.K(self.X))[0]
         if any(v.real<=-1e-10):
-            print(v.real.min())
+            print((v.real.min()))
             return False
         else:
             return True
@@ -548,22 +548,22 @@ class KernelTestsMiscellaneous(unittest.TestCase):
 
     def test_active_dims(self):
         np.testing.assert_array_equal(self.sumkern.active_dims, [0,1,2,3,7,9])
-        np.testing.assert_array_equal(self.sumkern._all_dims_active, range(10))
+        np.testing.assert_array_equal(self.sumkern._all_dims_active, list(range(10)))
         tmp = self.linear+self.rbf
         np.testing.assert_array_equal(tmp.active_dims, [0,2,3,9])
-        np.testing.assert_array_equal(tmp._all_dims_active, range(10))
+        np.testing.assert_array_equal(tmp._all_dims_active, list(range(10)))
         tmp = self.matern+self.rbf
         np.testing.assert_array_equal(tmp.active_dims, [0,1,2,7,9])
-        np.testing.assert_array_equal(tmp._all_dims_active, range(10))
+        np.testing.assert_array_equal(tmp._all_dims_active, list(range(10)))
         tmp = self.matern+self.rbf*self.linear
         np.testing.assert_array_equal(tmp.active_dims, [0,1,2,3,7,9])
-        np.testing.assert_array_equal(tmp._all_dims_active, range(10))
+        np.testing.assert_array_equal(tmp._all_dims_active, list(range(10)))
         tmp = self.matern+self.rbf+self.linear
         np.testing.assert_array_equal(tmp.active_dims, [0,1,2,3,7,9])
-        np.testing.assert_array_equal(tmp._all_dims_active, range(10))
+        np.testing.assert_array_equal(tmp._all_dims_active, list(range(10)))
         tmp = self.matern*self.rbf*self.linear
         np.testing.assert_array_equal(tmp.active_dims, [0,1,2,3,7,9])
-        np.testing.assert_array_equal(tmp._all_dims_active, range(10))
+        np.testing.assert_array_equal(tmp._all_dims_active, list(range(10)))
 
 class KernelTestsNonContinuous(unittest.TestCase):
     def setUp(self):
@@ -583,16 +583,16 @@ class KernelTestsNonContinuous(unittest.TestCase):
         self.X2[(N0*2):, -1] = 1
 
     def test_IndependentOutputs(self):
-        k = [GPy.kern.RBF(1, active_dims=[1], name='rbf1'), GPy.kern.RBF(self.D, active_dims=range(self.D), name='rbf012'), GPy.kern.RBF(2, active_dims=[0,2], name='rbf02')]
+        k = [GPy.kern.RBF(1, active_dims=[1], name='rbf1'), GPy.kern.RBF(self.D, active_dims=list(range(self.D)), name='rbf012'), GPy.kern.RBF(2, active_dims=[0,2], name='rbf02')]
         kern = GPy.kern.IndependentOutputs(k, -1, name='ind_split')
         np.testing.assert_array_equal(kern.active_dims, [-1,0,1,2])
         np.testing.assert_array_equal(kern._all_dims_active, [0,1,2,-1])
 
     def testIndependendGradients(self):
-        k = GPy.kern.RBF(self.D, active_dims=range(self.D))
+        k = GPy.kern.RBF(self.D, active_dims=list(range(self.D)))
         kern = GPy.kern.IndependentOutputs(k, -1, 'ind_single')
         self.assertTrue(check_kernel_gradient_functions(kern, X=self.X, X2=self.X2, verbose=verbose, fixed_X_dims=-1))
-        k = [GPy.kern.RBF(1, active_dims=[1], name='rbf1'), GPy.kern.RBF(self.D, active_dims=range(self.D), name='rbf012'), GPy.kern.RBF(2, active_dims=[0,2], name='rbf02')]
+        k = [GPy.kern.RBF(1, active_dims=[1], name='rbf1'), GPy.kern.RBF(self.D, active_dims=list(range(self.D)), name='rbf012'), GPy.kern.RBF(2, active_dims=[0,2], name='rbf02')]
         kern = GPy.kern.IndependentOutputs(k, -1, name='ind_split')
         self.assertTrue(check_kernel_gradient_functions(kern, X=self.X, X2=self.X2, verbose=verbose, fixed_X_dims=-1))
 

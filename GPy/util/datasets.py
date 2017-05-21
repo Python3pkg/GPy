@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 import csv
 import os
 import copy
@@ -13,6 +13,7 @@ import re
 import sys
 from io import open
 from .config import *
+from functools import reduce
 
 ipython_available=True
 try:
@@ -23,14 +24,14 @@ except ImportError:
 try:
     #In Python 2, cPickle is faster. It does not exist in Python 3 but the underlying code is always used
     #if available
-    import cPickle as pickle
+    import pickle as pickle
 except ImportError:
     import pickle
 
 #A Python2/3 import handler - urllib2 changed its name in Py3 and was also reorganised
 try:
-    from urllib2 import urlopen
-    from urllib2 import URLError
+    from urllib.request import urlopen
+    from urllib.error import URLError
 except ImportError:
     from urllib.request import urlopen
     from urllib.error import URLError
@@ -515,7 +516,7 @@ def google_trends(query_terms=['big data', 'machine learning', 'data science'], 
         # quote the query terms.
         quoted_terms = []
         for term in query_terms:
-            quoted_terms.append(urllib2.quote(term))
+            quoted_terms.append(urllib.parse.quote(term))
         print("Query terms: ", ', '.join(query_terms))
 
         print("Fetching query:")
@@ -529,7 +530,7 @@ def google_trends(query_terms=['big data', 'machine learning', 'data science'], 
         data = re.sub('new Date\((\d+),(\d+),(\d+)\)', (lambda m: '"%s-%02d-%02d"' % (m.group(1).strip(), 1+int(m.group(2)), int(m.group(3)))), data)
         timeseries = json.loads(data)
         columns = [k['label'] for k in timeseries['table']['cols']]
-        rows = map(lambda x: [k['v'] for k in x['c']], timeseries['table']['rows'])
+        rows = [[k['v'] for k in x['c']] for x in timeseries['table']['rows']]
         df = pandas.DataFrame(rows, columns=columns)
         if not os.path.isdir(dir_path):
             os.makedirs(dir_path)
@@ -631,7 +632,7 @@ def robot_wireless(data_set='robot_wireless'):
     allX = np.zeros((len(times), 2))
     allY[:]=-92.
     strengths={}
-    for address, j in zip(addresses, range(len(addresses))):
+    for address, j in zip(addresses, list(range(len(addresses)))):
         ind = np.nonzero(address==macaddress)
         temp_strengths=strength[ind]
         temp_x=x[ind]
@@ -805,7 +806,7 @@ def hapmap3(data_set='hapmap3'):
     dir_path = os.path.join(data_path,'hapmap3')
     hapmap_file_name = 'hapmap3_r2_b36_fwd.consensus.qc.poly'
     unpacked_files = [os.path.join(dir_path, hapmap_file_name+ending) for ending in ['.ped', '.map']]
-    unpacked_files_exist = reduce(lambda a, b:a and b, map(os.path.exists, unpacked_files))
+    unpacked_files_exist = reduce(lambda a, b:a and b, list(map(os.path.exists, unpacked_files)))
 
     if not unpacked_files_exist and not data_available(data_set):
         download_data(data_set)
@@ -815,7 +816,7 @@ def hapmap3(data_set='hapmap3'):
                                 '.info.pickle',
                                 '.nan.pickle']]
 
-    if not reduce(lambda a,b: a and b, map(os.path.exists, preprocessed_data_paths)):
+    if not reduce(lambda a,b: a and b, list(map(os.path.exists, preprocessed_data_paths))):
         if not overide_manual_authorize and not prompt_user("Preprocessing requires ~25GB "
                             "of memory and can take a (very) long time, continue? [Y/n]"):
             print("Preprocessing required for further usage.")
@@ -859,7 +860,7 @@ def hapmap3(data_set='hapmap3'):
         snpstr = snpstrnp[:,6:].astype('S1').reshape(snpstrnp.shape[0], -1, 2)
         inan = snpstr[:,:,0] == '0'
         status=write_status('filtering reference alleles...', 55, status)
-        ref = np.array(map(lambda x: np.unique(x)[-2:], snpstr.swapaxes(0,1)[:,:,:]))
+        ref = np.array([np.unique(x)[-2:] for x in snpstr.swapaxes(0,1)[:,:,:]])
         status=write_status('encoding snps...', 70, status)
         # Encode the information for each gene in {-1,0,1}:
         status=write_status('encoding snps...', 73, status)
@@ -1361,7 +1362,7 @@ def creep_data(data_set='creep_rupture'):
     all_data = np.loadtxt(os.path.join(data_path, data_set, 'taka'))
     y = all_data[:, 1:2].copy()
     features = [0]
-    features.extend(range(2, 31))
+    features.extend(list(range(2, 31)))
     X = all_data[:, features].copy()
     return data_details_return({'X': X, 'y': y}, data_set)
 

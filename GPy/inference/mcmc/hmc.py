@@ -130,7 +130,7 @@ class HMC_shortcut:
                 continue
             else:
                 if len(reversal)==0:
-                    Hlist = range(hmc_iters+pos,hmc_iters+pos-self.groupsize,-1)
+                    Hlist = list(range(hmc_iters+pos,hmc_iters+pos-self.groupsize,-1))
                     if self._testH(H_buf[Hlist]):
                         pos += 1
                     else:
@@ -147,7 +147,7 @@ class HMC_shortcut:
                             self.p[:] = -p_buf[hmc_iters+pos_new]
                             break
                 else:
-                    Hlist = range(hmc_iters+pos,hmc_iters+pos+self.groupsize)
+                    Hlist = list(range(hmc_iters+pos,hmc_iters+pos+self.groupsize))
 
                     if self._testH(H_buf[Hlist]):
                         pos += -1

@@ -67,7 +67,7 @@ class MRD(BayesianGPLVMMiniBatch):
         self.num_inducing = num_inducing
 
         if isinstance(Ylist, dict):
-            Ynames, Ylist = zip(*Ylist.items())
+            Ynames, Ylist = list(zip(*list(Ylist.items())))
 
         self.logger.debug("creating observable arrays")
         self.Ylist = [ObsAr(Y) for Y in Ylist]
@@ -345,9 +345,9 @@ class MRD(BayesianGPLVMMiniBatch):
             privateDims[i].sort()
 
         if printOut:
-            print('# Shared dimensions: ' + str(sharedDims))
+            print(('# Shared dimensions: ' + str(sharedDims)))
             for i in range(len(retainedScales)):
-                print('# Private dimensions model ' + str(i) + ':' + str(privateDims[i]))
+                print(('# Private dimensions model ' + str(i) + ':' + str(privateDims[i])))
 
         return sharedDims, privateDims
 

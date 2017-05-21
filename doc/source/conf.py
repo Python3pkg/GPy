@@ -34,14 +34,14 @@ if on_rtd:
 
     proc = subprocess.Popen("pwd", stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
-    print "program output:", out
+    print("program output:", out)
     proc = subprocess.Popen("ls ../../", stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
-    print "program output:", out
+    print("program output:", out)
     #Lets regenerate our rst files from the source, -P adds private modules (i.e kern._src)
     proc = subprocess.Popen("sphinx-apidoc -P -f -o . ../../GPy", stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
-    print "program output:", out
+    print("program output:", out)
     #proc = subprocess.Popen("whereis numpy", stdout=subprocess.PIPE, shell=True)
     #(out, err) = proc.communicate()
     #print "program output:", out
@@ -119,10 +119,10 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'GPy'
+project = 'GPy'
 #author = u'`Humans <https://github.com/SheffieldML/GPy/graphs/contributors>`_'
 author = 'GPy Authors, see https://github.com/SheffieldML/GPy/graphs/contributors'
-copyright = u'2015, '+author
+copyright = '2015, '+author
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -133,7 +133,7 @@ with open('../../GPy/__version__.py', 'r') as f:
     version = f.read()
     release = version
 
-print version
+print(version)
 
 # version = '0.8.8'
 # The full version, including alpha/beta/rc tags.

@@ -13,7 +13,7 @@ def get_blocks_3d(A, blocksizes, pagesizes=None):
     num_blocks = len(blocksizes)
     if pagesizes == None:
         #Assume each page of A should be its own dimension
-        pagesizes = range(A.shape[2])#[0]*A.shape[2]
+        pagesizes = list(range(A.shape[2]))#[0]*A.shape[2]
     num_pages = len(pagesizes)
     B = np.empty(shape=(num_blocks, num_blocks, num_pages), dtype=np.object)
     count_k = 0
@@ -100,10 +100,10 @@ def block_dot(A, B, diagonal=False):
         Dshape = D.shape
         if diagonal and (len(Cshape) == 1 or len(Dshape) == 1\
                 or C.shape[0] != C.shape[1] or D.shape[0] != D.shape[1]):
-            print("Broadcasting, C: {} D:{}".format(C.shape, D.shape))
+            print(("Broadcasting, C: {} D:{}".format(C.shape, D.shape)))
             return C*D
         else:
-            print("Dotting, C: {} C:{}".format(C.shape, D.shape))
+            print(("Dotting, C: {} C:{}".format(C.shape, D.shape)))
             return np.dot(C,D)
     dot = np.vectorize(f, otypes = [np.object])
     return dot(A,B)

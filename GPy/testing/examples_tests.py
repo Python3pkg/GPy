@@ -46,9 +46,9 @@ def test_models():
     for loader, module_name, is_pkg in pkgutil.iter_modules([examples_path]):
         # Load examples
         module_examples = loader.find_module(module_name).load_module(module_name)
-        print("MODULE", module_examples)
+        print(("MODULE", module_examples))
         print("Before")
-        print(inspect.getmembers(module_examples, predicate=inspect.isfunction))
+        print((inspect.getmembers(module_examples, predicate=inspect.isfunction)))
         functions = [ func for func in inspect.getmembers(module_examples, predicate=inspect.isfunction) if func[0].startswith('_') is False ][::-1]
         print("After")
         print(functions)
@@ -59,7 +59,7 @@ def test_models():
                     print("Skipping as gpxpy is not available to parse GPS")
                     continue
 
-            print("Testing example: ", example[0])
+            print(("Testing example: ", example[0]))
             # Generate model
 
             try:
@@ -89,12 +89,12 @@ def test_models():
             #yield model_checkgrads, model
             #yield model_instance, model
 
-        print("Finished checking module {m}".format(m=module_name))
-        if len(failing_models.keys()) > 0:
+        print(("Finished checking module {m}".format(m=module_name)))
+        if len(list(failing_models.keys())) > 0:
             print("Failing models: ")
             print(failing_models)
 
-    if len(failing_models.keys()) > 0:
+    if len(list(failing_models.keys())) > 0:
         print(failing_models)
         raise Exception(failing_models)
 

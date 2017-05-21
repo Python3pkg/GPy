@@ -281,8 +281,8 @@ class Kern(Parameterized):
         """
         Shortcut for tensor `prod`.
         """
-        assert np.all(self._all_dims_active == range(self.input_dim)), "Can only use kernels, which have their input_dims defined from 0"
-        assert np.all(other._all_dims_active == range(other.input_dim)), "Can only use kernels, which have their input_dims defined from 0"
+        assert np.all(self._all_dims_active == list(range(self.input_dim))), "Can only use kernels, which have their input_dims defined from 0"
+        assert np.all(other._all_dims_active == list(range(other.input_dim))), "Can only use kernels, which have their input_dims defined from 0"
         other._all_dims_active += self.input_dim
         return self.prod(other)
 

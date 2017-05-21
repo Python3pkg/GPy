@@ -155,7 +155,7 @@ def blockify_third(func):
         if self.not_block_really and (len(retval.shape) < 3):
             num_data = retval.shape[0]
             d3_block_cache = np.zeros((num_data, num_data, num_data))
-            diag_slice = range(num_data)
+            diag_slice = list(range(num_data))
             d3_block_cache[diag_slice, diag_slice, diag_slice] = np.squeeze(retval)
             return d3_block_cache
         else:
@@ -171,7 +171,7 @@ def blockify_dhess_dtheta(func):
             num_data = retval.shape[0]
             num_params = retval.shape[-1]
             dhess_dtheta = np.zeros((num_data, num_data, num_params))
-            diag_slice = range(num_data)
+            diag_slice = list(range(num_data))
             for param_ind in range(num_params):
                 dhess_dtheta[diag_slice, diag_slice, param_ind] = np.squeeze(retval[:,param_ind])
             return dhess_dtheta

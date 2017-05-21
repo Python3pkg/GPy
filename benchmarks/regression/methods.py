@@ -5,9 +5,7 @@ import abc
 import numpy as np
 import GPy
 
-class RegressionMethod(object):
-    __metaclass__ = abc.ABCMeta
-    
+class RegressionMethod(object, metaclass=abc.ABCMeta):
     def __init__(self):
         self.preprocess = True
         

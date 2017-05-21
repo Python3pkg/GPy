@@ -104,14 +104,14 @@ class Likelihood(Parameterized):
             #Need to zip individual elements of Y_metadata aswell
             Y_metadata_flat = {}
             if Y_metadata is not None:
-                for key, val in Y_metadata.items():
+                for key, val in list(Y_metadata.items()):
                     Y_metadata_flat[key] = np.atleast_1d(val).reshape(-1,1)
 
             zipped_values = []
 
             for i in range(y_test.shape[0]):
                 y_m = {}
-                for key, val in Y_metadata_flat.items():
+                for key, val in list(Y_metadata_flat.items()):
                     if np.isscalar(val) or val.shape[0] == 1:
                         y_m[key] = val
                     else:
@@ -120,7 +120,7 @@ class Likelihood(Parameterized):
                 zipped_values.append((flat_y_test[i], flat_mu_star[i], flat_var_star[i], y_m))
         else:
             #Otherwise just pass along None's
-            zipped_values = zip(flat_y_test, flat_mu_star, flat_var_star, [None]*y_test.shape[0])
+            zipped_values = list(zip(flat_y_test, flat_mu_star, flat_var_star, [None]*y_test.shape[0]))
 
         def integral_generator(yi, mi, vi, yi_m):
             """Generate a function which can be integrated
@@ -141,8 +141,8 @@ class Likelihood(Parameterized):
 
             return f
 
-        p_ystar, _ = zip(*[quad(integral_generator(yi, mi, vi, yi_m), -np.inf, np.inf)
-                           for yi, mi, vi, yi_m in zipped_values])
+        p_ystar, _ = list(zip(*[quad(integral_generator(yi, mi, vi, yi_m), -np.inf, np.inf)
+                           for yi, mi, vi, yi_m in zipped_values]))
         p_ystar = np.array(p_ystar).reshape(*y_test.shape)
         return np.log(p_ystar)
 
@@ -713,8 +713,8 @@ class Likelihood(Parameterized):
 
             #Show progress
             if i % int((burn_in+num_samples)*0.1) == 0:
-                print("{}% of samples taken ({})".format((i/int((burn_in+num_samples)*0.1)*10), i))
-                print("Last run accept ratio: ", accept_ratio[i])
+                print(("{}% of samples taken ({})".format((i/int((burn_in+num_samples)*0.1)*10), i)))
+                print(("Last run accept ratio: ", accept_ratio[i]))
 
-        print("Average accept ratio: ", np.mean(accept_ratio))
+        print(("Average accept ratio: ", np.mean(accept_ratio)))
         return chain_values

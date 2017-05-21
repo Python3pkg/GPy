@@ -31,7 +31,7 @@ def index_to_slices(index):
     ind_ = np.hstack((ind,ind[0]+ind[-1]+1))
     switchpoints = np.nonzero(ind_ - np.roll(ind_,+1))[0]
 
-    [ret[ind_i].append(slice(*indexes_i)) for ind_i,indexes_i in zip(ind[switchpoints[:-1]],zip(switchpoints,switchpoints[1:]))]
+    [ret[ind_i].append(slice(*indexes_i)) for ind_i,indexes_i in zip(ind[switchpoints[:-1]],list(zip(switchpoints,switchpoints[1:])))]
     return ret
 
 class IndependentOutputs(CombinationKernel):
@@ -94,14 +94,14 @@ class IndependentOutputs(CombinationKernel):
             if self.single_kern: target[:] += kern.gradient
             else: target[i][:] += kern.gradient
         if X2 is None:
-            [[collate_grads(kern, i, dL_dK[s,ss], X[s], X[ss]) for s,ss in itertools.product(slices_i, slices_i)] for i,(kern,slices_i) in enumerate(zip(kerns,slices))]
+            [[collate_grads(kern, i, dL_dK[s,ss], X[s], X[ss]) for s,ss in itertools.product(slices_i, slices_i)] for i,(kern,slices_i) in enumerate(list(zip(kerns,slices)))]
         else:
             slices2 = index_to_slices(X2[:,self.index_dim])
-            [[[collate_grads(kern, i, dL_dK[s,s2],X[s],X2[s2]) for s in slices_i] for s2 in slices_j] for i,(kern,slices_i,slices_j) in enumerate(zip(kerns,slices,slices2))]
+            [[[collate_grads(kern, i, dL_dK[s,s2],X[s],X2[s2]) for s in slices_i] for s2 in slices_j] for i,(kern,slices_i,slices_j) in enumerate(list(zip(kerns,slices,slices2)))]
         if self.single_kern:
             self.kern.gradient = target
         else:
-            [kern.gradient.__setitem__(Ellipsis, target[i]) for i, [kern, _] in enumerate(zip(kerns, slices))]
+            [kern.gradient.__setitem__(Ellipsis, target[i]) for i, [kern, _] in enumerate(list(zip(kerns, slices)))]
 
     def gradients_X(self,dL_dK, X, X2=None):
         target = np.zeros(X.shape)
@@ -148,9 +148,9 @@ class IndependentOutputs(CombinationKernel):
             kern.update_gradients_diag(dL,X)
             if self.single_kern: target[:] += kern.gradient
             else: target[i][:] += kern.gradient
-        [[collate_grads(kern, i, dL_dKdiag[s], X[s,:]) for s in slices_i] for i, (kern, slices_i) in enumerate(zip(kerns, slices))]
+        [[collate_grads(kern, i, dL_dKdiag[s], X[s,:]) for s in slices_i] for i, (kern, slices_i) in enumerate(list(zip(kerns, slices)))]
         if self.single_kern: self.kern.gradient = target
-        else:[kern.gradient.__setitem__(Ellipsis, target[i]) for i, [kern, _] in enumerate(zip(kerns, slices))]
+        else:[kern.gradient.__setitem__(Ellipsis, target[i]) for i, [kern, _] in enumerate(list(zip(kerns, slices)))]
 
 class Hierarchical(CombinationKernel):
     """
@@ -174,7 +174,7 @@ class Hierarchical(CombinationKernel):
         assert len(kernels) > 1
         self.levels = len(kernels) -1
         input_max = max([k.input_dim for k in kernels])
-        super(Hierarchical, self).__init__(kernels=kernels, extra_dims = range(input_max, input_max + len(kernels)-1), name=name)
+        super(Hierarchical, self).__init__(kernels=kernels, extra_dims = list(range(input_max, input_max + len(kernels)-1)), name=name)
 
     def K(self,X ,X2=None):
         K = self.parts[0].K(X, X2) # compute 'base' kern everywhere

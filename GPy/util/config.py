@@ -4,9 +4,9 @@
 import os
 try:
     #Attempt Python 2 ConfigParser setup
-    import ConfigParser
-    config = ConfigParser.ConfigParser()
-    from ConfigParser import NoOptionError
+    import configparser
+    config = configparser.ConfigParser()
+    from configparser import NoOptionError
 except ImportError:
     #Attempt Python 3 ConfigParser setup
     import configparser

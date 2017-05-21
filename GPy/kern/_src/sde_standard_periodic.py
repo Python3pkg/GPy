@@ -71,7 +71,7 @@ class sde_StdPeriodic(StdPeriodic):
         if np.any( np.isfinite(dq2l) == False):
             raise ValueError("SDE periodic covariance error 2")
         
-        F    = np.kron(np.diag(range(0,N+1)),np.array( ((0, -w0), (w0, 0)) ) )
+        F    = np.kron(np.diag(list(range(0,N+1))),np.array( ((0, -w0), (w0, 0)) ) )
         L    = np.eye(2*(N+1))
         Qc   = np.zeros((2*(N+1), 2*(N+1)))
         P_inf = np.kron(np.diag(q2),np.eye(2))
@@ -89,7 +89,7 @@ class sde_StdPeriodic(StdPeriodic):
         dP_inf[:,:,0] = P_inf / self.variance
 
         # Derivatives self.wavelengths
-        dF[:,:,1] = np.kron(np.diag(range(0,N+1)),np.array( ((0,  w0), (-w0, 0)) ) / self.wavelengths );
+        dF[:,:,1] = np.kron(np.diag(list(range(0,N+1))),np.array( ((0,  w0), (-w0, 0)) ) / self.wavelengths );
         dQc[:,:,1] = np.zeros(Qc.shape)
         dP_inf[:,:,1] = np.zeros(P_inf.shape)      
         
@@ -149,7 +149,7 @@ def seriescoeff(m=6,lengthScale=1.0,magnSigma2=1.0, true_covariance=False):
             sp.special.binom(j, sp.floor( (j-m)/2.0 * np.array(m<=j, dtype=np.float64) ))*\
             np.array(m<=j, dtype=np.float64) *np.array(sp.mod(j-m,2)==0, dtype=np.float64)
                 
-        M,J = np.meshgrid(range(0,m+1),range(0,m+1))
+        M,J = np.meshgrid(list(range(0,m+1)),list(range(0,m+1)))
         
         coeffs = bb(J,M) / sp.misc.factorial(J) * sp.exp( -lengthScale**(-2) ) *\
              (lengthScale**(-2))**J  *magnSigma2
@@ -159,7 +159,7 @@ def seriescoeff(m=6,lengthScale=1.0,magnSigma2=1.0, true_covariance=False):
         coeffs = np.sum(coeffs,0)
         
     else:
-        coeffs = 2*magnSigma2*sp.exp( -lengthScale**(-2) ) * special.iv(range(0,m+1),1.0/lengthScale**(2))
+        coeffs = 2*magnSigma2*sp.exp( -lengthScale**(-2) ) * special.iv(list(range(0,m+1)),1.0/lengthScale**(2))
         if np.any( np.isfinite(coeffs) == False):
             raise ValueError("sde_standard_periodic: Coefficients are not finite!")
             #import pdb; pdb.set_trace()
@@ -168,7 +168,7 @@ def seriescoeff(m=6,lengthScale=1.0,magnSigma2=1.0, true_covariance=False):
         # Derivatives wrt (lengthScale)
         coeffs_dl = np.zeros(m+1)
         coeffs_dl[1:] = magnSigma2*lengthScale**(-3) * sp.exp(-lengthScale**(-2))*\
-        (-4*special.iv(range(0,m),lengthScale**(-2)) + 4*(1+np.arange(1,m+1)*lengthScale**(2))*special.iv(range(1,m+1),lengthScale**(-2)) )    
+        (-4*special.iv(list(range(0,m)),lengthScale**(-2)) + 4*(1+np.arange(1,m+1)*lengthScale**(2))*special.iv(list(range(1,m+1)),lengthScale**(-2)) )    
             
         # The first element
         coeffs_dl[0] = magnSigma2*lengthScale**(-3) * np.exp(-lengthScale**(-2))*\

@@ -1,7 +1,7 @@
 # Copyright (c) 2015, Zhenwen Dai
 # Licensed under the BSD 3-clause license (see LICENSE.txt)
 
-from __future__ import print_function
+
 from evaluation import RMSE
 from methods import GP_RBF, SVIGP_RBF, SparseGP_RBF
 from tasks import Housing, WineQuality

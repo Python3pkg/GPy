@@ -165,7 +165,7 @@ def scatter_label_generator(labels, X, visible_dims, marker=None):
         from numbers import Number
         if isinstance(ul, str):
             try:
-                this_label = unicode(ul)
+                this_label = str(ul)
             except NameError:
                 #python3
                 this_label = ul
@@ -201,7 +201,7 @@ def subsample_X(X, labels, num_samples=1000):
     num_samples and the returned subsampled X.
     """
     if X.shape[0] > num_samples:
-        print("Warning: subsampling X, as it has more samples then {}. X.shape={!s}".format(int(num_samples), X.shape))
+        print(("Warning: subsampling X, as it has more samples then {}. X.shape={!s}".format(int(num_samples), X.shape)))
         if labels is not None:
             subsample = []
             for _, _, _, _, index, _ in scatter_label_generator(labels, X, (0, None, None)):
@@ -268,7 +268,7 @@ def update_not_existing_kwargs(to_update, update_from):
     """
     if to_update is None:
         to_update = {}
-    to_update.update({k:v for k,v in update_from.items() if k not in to_update})
+    to_update.update({k:v for k,v in list(update_from.items()) if k not in to_update})
     return to_update
 
 def get_x_y_var(model):
@@ -355,7 +355,7 @@ def x_frame1D(X,plot_limits=None,resolution=None):
             xmin,xmax = X.min(0),X.max(0)
         xmin, xmax = xmin-0.25*(xmax-xmin), xmax+0.25*(xmax-xmin)
     elif len(plot_limits) == 2:
-        xmin, xmax = map(np.atleast_1d, plot_limits)
+        xmin, xmax = list(map(np.atleast_1d, plot_limits))
     else:
         raise ValueError("Bad limits for plotting")
 

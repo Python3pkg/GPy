@@ -225,7 +225,7 @@ class lvm_dimselect(lvm):
         self.labels = labels
         lvm.__init__(self,vals,model,data_visualize,latent_axes,sense_axes,latent_index)
         self.show_sensitivities()
-        print(self.latent_values)
+        print((self.latent_values))
         print("use left and right mouse buttons to select dimensions")
 
 
@@ -255,7 +255,7 @@ class lvm_dimselect(lvm):
 
 
     def on_leave(self,event):
-        print(type(self.latent_values))
+        print((type(self.latent_values)))
         latent_values = self.latent_values.copy()
         y = self.model.predict(latent_values[None,:])[0]
         self.data_visualize.modify(y)
@@ -320,7 +320,7 @@ class image_show(matplotlib_show):
             for iR in range(num_images):
                 for iC in range(num_images):
                     cur_img_id = iR*num_images + iC
-                    cur_img = np.reshape(vals[0,dim*cur_img_id+np.array(range(dim))], self.dimensions, order=self.order)
+                    cur_img = np.reshape(vals[0,dim*cur_img_id+np.array(list(range(dim)))], self.dimensions, order=self.order)
                     first_row = iR*self.dimensions[0]
                     last_row = (iR+1)*self.dimensions[0]
                     first_col = iC*self.dimensions[1]
@@ -328,7 +328,7 @@ class image_show(matplotlib_show):
                     self.vals[first_row:last_row, first_col:last_col] = cur_img
 
         else:
-            self.vals = np.reshape(vals[0,dim*self.select_image+np.array(range(dim))], self.dimensions, order=self.order)
+            self.vals = np.reshape(vals[0,dim*self.select_image+np.array(list(range(dim)))], self.dimensions, order=self.order)
         if self.transpose:
             self.vals = self.vals.T
         # if not self.scale:

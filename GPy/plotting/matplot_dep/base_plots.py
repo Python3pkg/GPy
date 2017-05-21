@@ -2,6 +2,7 @@
 # Licensed under the BSD 3-clause license (see LICENSE.txt)
 from matplotlib import pyplot as plt
 import numpy as np
+from functools import reduce
 
 def ax_default(fignum, ax):
     if ax is None:
@@ -30,7 +31,7 @@ def gpplot(x, mu, lower, upper, edgecol='#3300FF', fillcol='#33CCFF', ax=None, f
 
     #here's the box
     kwargs['linewidth']=0.5
-    if not 'alpha' in kwargs.keys():
+    if not 'alpha' in list(kwargs.keys()):
         kwargs['alpha'] = 0.3
     plots.append(axes.fill(np.hstack((x,x[::-1])),np.hstack((upper,lower[::-1])),color=fillcol,**kwargs))
 
@@ -48,7 +49,7 @@ def gradient_fill(x, percentiles, ax=None, fignum=None, **kwargs):
     #here's the box
     if 'linewidth' not in kwargs:
         kwargs['linewidth'] = 0.5
-    if not 'alpha' in kwargs.keys():
+    if not 'alpha' in list(kwargs.keys()):
         kwargs['alpha'] = 1./(len(percentiles))
     
     # pop where from kwargs
@@ -138,11 +139,11 @@ def gperrors(x, mu, lower, upper, edgecol=None, ax=None, fignum=None, **kwargs):
     if edgecol is None:
         edgecol='#3300FF'
 
-    if not 'alpha' in kwargs.keys():
+    if not 'alpha' in list(kwargs.keys()):
         kwargs['alpha'] = 1.
 
 
-    if not 'lw' in kwargs.keys():
+    if not 'lw' in list(kwargs.keys()):
         kwargs['lw'] = 1.
 
 

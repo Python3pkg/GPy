@@ -76,7 +76,7 @@ class SparseGPMissing(StochasticStorage):
             except:
                 bdict[arr_str] = [[d], ~inan]
         np.set_printoptions(**opt)
-        self.d = bdict.values()
+        self.d = list(bdict.values())
 
 class SparseGPStochastics(StochasticStorage):
     """
@@ -110,7 +110,7 @@ class SparseGPStochastics(StochasticStorage):
                     except:
                         bdict[arr_str] = [[d], ~inan]
                 np.set_printoptions(**opt)
-                self.d = bdict.values()
+                self.d = list(bdict.values())
             else:
                 self.d = [[self.d, None]]
 

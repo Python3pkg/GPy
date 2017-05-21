@@ -1,6 +1,6 @@
 # Copyright (c) 2012, GPy authors (see AUTHORS.txt).
 # Licensed under the BSD 3-clause license (see LICENSE.txt)
-from __future__ import division
+
 
 import unittest
 import numpy as np
@@ -212,7 +212,7 @@ class MiscTests(unittest.TestCase):
         m2 = GPy.models.GPRegression(self.X, self.Y)
         np.testing.assert_equal(m.log_likelihood(), m2.log_likelihood())
         m.randomize()
-        m2[:] = m[''].values()
+        m2[:] = list(m[''].values())
         np.testing.assert_almost_equal(m.log_likelihood(), m2.log_likelihood())
         m.randomize()
         m2[''] = m[:]
@@ -308,7 +308,7 @@ class MiscTests(unittest.TestCase):
         m2.kern[''] = m.kern['']
         np.testing.assert_almost_equal(m.log_likelihood(), m2.log_likelihood())
         m.kern.randomize()
-        m2.kern[:] = m.kern[''].values()
+        m2.kern[:] = list(m.kern[''].values())
         np.testing.assert_almost_equal(m.log_likelihood(), m2.log_likelihood())
 
     def test_big_model(self):

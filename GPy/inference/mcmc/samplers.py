@@ -1,6 +1,6 @@
 # ## Copyright (c) 2014, Zhenwen Dai
 # Licensed under the BSD 3-clause license (see LICENSE.txt)
-from __future__ import print_function
+
 
 import numpy as np
 import sys
@@ -9,7 +9,7 @@ import sys
 try:
     #In Python 2, cPickle is faster. It does not exist in Python 3 but the underlying code is always used
     #if available
-    import cPickle as pickle
+    import pickle as pickle
 except ImportError:
     import pickle
 

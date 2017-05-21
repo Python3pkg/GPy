@@ -532,7 +532,7 @@ class DescreteStateSpaceMeta(type):
                      typeclass).__new__(typeclass, name, bases, attributes)
 
 
-class DescreteStateSpace(object):
+class DescreteStateSpace(object, metaclass=DescreteStateSpaceMeta):
     """
     This class implents state-space inference for linear and non-linear
     state-space models.
@@ -554,7 +554,6 @@ class DescreteStateSpace(object):
     implementations are very similar.
 
     """
-    __metaclass__ = DescreteStateSpaceMeta
 
     @staticmethod
     def _reshape_input_data(shape, desired_dim=3):
@@ -3131,15 +3130,15 @@ class ContDescrStateSpace(DescreteStateSpace):
                                     grad_params_no=grad_params_no, P_inf=P_inf, dP_inf=dP_inf, dF=dF, dQc=dQc)
             if print_verbose:
                 print("CDO:  Continue-to-discrete INSTANTANEOUS object is created.")
-                print("CDO:  Number of different time steps: %i" % (number_unique_indices,) )
+                print(("CDO:  Number of different time steps: %i" % (number_unique_indices,) ))
 
         else:
             AQcomp = AQcompute_batch(F,L,Qc,dt,compute_derivatives=compute_derivatives,
                                     grad_params_no=grad_params_no, P_inf=P_inf, dP_inf=dP_inf, dF=dF, dQc=dQc)
             if print_verbose:
                 print("CDO:  Continue-to-discrete BATCH object is created.")
-                print("CDO:  Number of different time steps: %i" % (number_unique_indices,) )
-                print("CDO:  Total size if its data: %i" % (AQcomp.total_size_of_data,) )
+                print(("CDO:  Number of different time steps: %i" % (number_unique_indices,) ))
+                print(("CDO:  Total size if its data: %i" % (AQcomp.total_size_of_data,) ))
 
         return AQcomp
 

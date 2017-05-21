@@ -5,9 +5,7 @@ import abc
 import os
 import numpy as np
 
-class RegressionTask(object):
-    __metaclass__ = abc.ABCMeta
-    
+class RegressionTask(object, metaclass=abc.ABCMeta):
     def __init__(self, datapath='./'):
         self.datapath = datapath
     

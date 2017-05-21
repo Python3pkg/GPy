@@ -4,9 +4,7 @@
 import abc
 import numpy as np
 
-class Evaluation(object):
-    __metaclass__ = abc.ABCMeta
-    
+class Evaluation(object, metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def evaluate(self, gt, pred):
         """Compute a scalar for access the performance"""

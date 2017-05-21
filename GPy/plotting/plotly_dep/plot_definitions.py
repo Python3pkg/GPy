@@ -290,7 +290,7 @@ class PlotlyPlotsBase(AbstractPlottingLibrary):
             colarray = Tango.hex2rgb(color)
             opacity = .9
         else:
-            colarray = map(float(color.strip(')').split('(')[1]))
+            colarray = list(map(float(color.strip(')').split('(')[1])))
             if len(colarray) == 4:
                 colarray, opacity = colarray[:3] ,colarray[3]
 
@@ -301,10 +301,10 @@ class PlotlyPlotsBase(AbstractPlottingLibrary):
             from itertools import tee
             a, b = tee(iterable)
             next(b, None)
-            return zip(a, b)
+            return list(zip(a, b))
 
         polycol = []
-        for i, y1, a in zip(range(len(percentiles)), percentiles, alpha):
+        for i, y1, a in zip(list(range(len(percentiles))), percentiles, alpha):
             fcolor = 'rgba({}, {}, {}, {alpha})'.format(*colarray, alpha=a)
             if i ==  len(percentiles)/2:
                 polycol.append(Scatter(x=X, y=y1, fillcolor=fcolor, showlegend=True,

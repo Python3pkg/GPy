@@ -52,12 +52,12 @@ class Priorizable(Parameterizable):
             return 0.
         x = self.param_array
         #evaluate the prior log densities
-        log_p = reduce(lambda a, b: a + b, (p.lnpdf(x[ind]).sum() for p, ind in self.priors.items()), 0)
+        log_p = reduce(lambda a, b: a + b, (p.lnpdf(x[ind]).sum() for p, ind in list(self.priors.items())), 0)
 
         #account for the transformation by evaluating the log Jacobian (where things are transformed)
         log_j = 0.
-        priored_indexes = np.hstack([i for p, i in self.priors.items()])
-        for c,j in self.constraints.items():
+        priored_indexes = np.hstack([i for p, i in list(self.priors.items())])
+        for c,j in list(self.constraints.items()):
             if not isinstance(c, Transformation):continue
             for jj in j:
                 if jj in priored_indexes:
@@ -71,10 +71,10 @@ class Priorizable(Parameterizable):
         x = self.param_array
         ret = np.zeros(x.size)
         #compute derivate of prior density
-        [np.put(ret, ind, p.lnpdf_grad(x[ind])) for p, ind in self.priors.items()]
+        [np.put(ret, ind, p.lnpdf_grad(x[ind])) for p, ind in list(self.priors.items())]
         #add in jacobian derivatives if transformed
-        priored_indexes = np.hstack([i for p, i in self.priors.items()])
-        for c,j in self.constraints.items():
+        priored_indexes = np.hstack([i for p, i in list(self.priors.items())])
+        for c,j in list(self.constraints.items()):
             if not isinstance(c, Transformation):continue
             for jj in j:
                 if jj in priored_indexes:

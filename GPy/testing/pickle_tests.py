@@ -24,7 +24,7 @@ class ListDictTestCase(unittest.TestCase):
     def assertListDictEquals(self, d1, d2, msg=None):
         #py3 fix
         #for k,v in d1.iteritems():
-        for k,v in d1.items():
+        for k,v in list(d1.items()):
             self.assertListEqual(list(v), list(d2[k]), msg)
     def assertArrayListEquals(self, l1, l2):
         for a1, a2 in zip(l1,l2):

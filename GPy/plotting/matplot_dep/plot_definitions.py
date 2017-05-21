@@ -36,6 +36,7 @@ from matplotlib.colors import LinearSegmentedColormap
 from .controllers import ImshowController, ImAnnotateController
 import itertools
 from .util import legend_ontop
+from functools import reduce
 
 class MatplotlibPlots(AbstractPlottingLibrary):
     def __init__(self):
@@ -232,7 +233,7 @@ class MatplotlibPlots(AbstractPlottingLibrary):
             #    pass
             a, b = tee(iterable)
             next(b, None)
-            return zip(a, b)
+            return list(zip(a, b))
 
         polycol = []
         for y1, y2 in pairwise(percentiles):

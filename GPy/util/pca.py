@@ -48,7 +48,7 @@ class PCA(object):
             X_ = numpy.ma.masked_array(X, inan)
             self.mu = X_.mean(0).base
             self.sigma = X_.std(0).base
-        reduce(lambda y,x: setitem(x[0], x[1], x[2]), zip(X.T, inan.T, self.mu), None)
+        reduce(lambda y,x: setitem(x[0], x[1], x[2]), list(zip(X.T, inan.T, self.mu)), None)
         X = X - self.mu
         X = X / numpy.where(self.sigma == 0, 1e-30, self.sigma)
         return X
@@ -91,7 +91,7 @@ class PCA(object):
             Q = self.Q
         ticks = numpy.arange(Q)
         bar = ax.bar(ticks - .4, self.fracs[:Q], color=col)
-        ax.set_xticks(ticks, map(lambda x: r"${}$".format(x), ticks + 1))
+        ax.set_xticks(ticks, [r"${}$".format(x) for x in ticks + 1])
         ax.set_ylabel("Eigenvalue fraction")
         ax.set_xlabel("PC")
         ax.set_ylim(0, ax.get_ylim()[1])

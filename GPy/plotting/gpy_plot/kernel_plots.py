@@ -77,7 +77,7 @@ def plot_ARD(kernel, filtering=None, legend=False, canvas=None, **kwargs):
             last_bottom = ard_params[i,:]
             bottom += last_bottom
         else:
-            print("filtering out {}".format(parts[i].name))
+            print(("filtering out {}".format(parts[i].name)))
 
     #add_bar_labels(fig, ax, [bars[-1]], bottom=bottom-last_bottom)
 

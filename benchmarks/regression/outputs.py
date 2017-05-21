@@ -1,14 +1,12 @@
 # Copyright (c) 2015, Zhenwen Dai
 # Licensed under the BSD 3-clause license (see LICENSE.txt)
 
-from __future__ import print_function
+
 import abc
 import os
 import numpy as np
 
-class Output(object):
-    __metaclass__ = abc.ABCMeta
-    
+class Output(object, metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def output(self, config, results):
         """Return the test data: training data and labels"""
